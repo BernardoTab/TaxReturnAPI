@@ -32,8 +32,7 @@ namespace Tax.Services.Implementations.TaxReturns.Commands.Validators
             if (_command.TaxReturnInfo == default)
             {
                 throw new MissingRequiredPropertyException(
-                    nameof(TaxReturnInfo),
-                    nameof(ProcessTaxReturnInfoCommand));
+                    nameof(TaxReturnInfo));
             }
             await _taxReturnInfoValidator.ValidateAsync(_command.TaxReturnInfo);
         }

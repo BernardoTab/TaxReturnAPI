@@ -39,8 +39,7 @@ namespace Tax.Services.Implementations.TaxReturns.EntityValidators
             {
                 throw new ValueNotSupportedException(
                     _taxReturnInfo.GrossValue,
-                    nameof(TaxReturnInfo.GrossValue),
-                    nameof(TaxReturnInfo));
+                    nameof(TaxReturnInfo.GrossValue));
             }
         }
 
@@ -50,8 +49,7 @@ namespace Tax.Services.Implementations.TaxReturns.EntityValidators
             {
                 throw new ValueNotSupportedException(
                     _taxReturnInfo.NetValue,
-                    nameof(TaxReturnInfo.NetValue),
-                    nameof(TaxReturnInfo));
+                    nameof(TaxReturnInfo.NetValue));
             }
         }
 
@@ -61,8 +59,7 @@ namespace Tax.Services.Implementations.TaxReturns.EntityValidators
             {
                 throw new ValueNotSupportedException(
                     _taxReturnInfo.VATValue,
-                    nameof(TaxReturnInfo.VATValue),
-                    nameof(TaxReturnInfo));
+                    nameof(TaxReturnInfo.VATValue));
             }
         }
 
@@ -70,9 +67,8 @@ namespace Tax.Services.Implementations.TaxReturns.EntityValidators
         {
             if (_taxReturnInfo.AustrianVATRate == default)
             {
-                throw new MissingRequiredPropertyException(
-                    nameof(TaxReturnInfo.AustrianVATRate),
-                    nameof(TaxReturnInfo));
+                throw new InvalidVATRateValueException(
+                    _taxReturnInfo.AustrianVATRate);
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Tax.Entities.Exceptions
 {
-    public class IncorrectNumberOfValidAmountValuesException : Exception
+    public class IncorrectNumberOfValidAmountValuesException : Exception, IKnownException
     {
         public int PropertyCount { get; set; }
 

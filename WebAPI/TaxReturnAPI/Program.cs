@@ -1,4 +1,5 @@
 using TaxReturnAPI;
+using TaxReturnAPI.Middleware;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +9,8 @@ builder.Services.RegisterServices();
 WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Enable Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
