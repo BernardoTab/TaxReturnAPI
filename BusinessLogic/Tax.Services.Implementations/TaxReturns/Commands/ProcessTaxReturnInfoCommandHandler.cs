@@ -27,13 +27,13 @@ namespace Tax.Services.Implementations.TaxReturns.Commands
             switch (validAmountPropertyName)
             {
                 case nameof(TaxReturnInfo.NetValue):
-                    ProcessTaxInfoBasedOnNetValue();
+                    result = ProcessTaxInfoBasedOnNetValue();
                     break;
                 case nameof(TaxReturnInfo.GrossValue):
-                    ProcessTaxInfoBasedOnGrossValue();
+                    result = ProcessTaxInfoBasedOnGrossValue();
                     break;
                 case nameof(TaxReturnInfo.VATValue):
-                    ProcessTaxInfoBasedOnVATValue();
+                    result = ProcessTaxInfoBasedOnVATValue();
                     break;
             }
             return result;
