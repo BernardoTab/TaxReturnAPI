@@ -26,7 +26,7 @@ namespace Tax.Services.Implementations.TaxReturns.EntityValidators
         private void ValidateNumberOfAmountValues()
         {
             int nonDefaultValues = new[] { _taxReturnInfo.GrossValue, _taxReturnInfo.NetValue, _taxReturnInfo.VATValue }
-                .Count(p => p != default && p != 0);
+                .Count(p => p != default);
             if (nonDefaultValues != 1)
             {
                 throw new IncorrectNumberOfValidAmountValuesException(nonDefaultValues);
