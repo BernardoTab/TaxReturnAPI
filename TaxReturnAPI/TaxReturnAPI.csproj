@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary1\Tax.DataTransferring.csproj" />
+    <ProjectReference Include="..\Tax.DataTransferring.Entities.Mapping\Tax.DataTransferring.Entities.Mapping.csproj" />
+    <ProjectReference Include="..\Tax.Services.Implementations.IoC\Tax.Services.Implementations.IoC.csproj" />
+    <ProjectReference Include="..\Tax.Services.Implementations\Tax.Services.Implementations.csproj" />
   </ItemGroup>
 
 </Project>

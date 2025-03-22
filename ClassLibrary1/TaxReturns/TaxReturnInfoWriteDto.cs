@@ -1,6 +1,6 @@
 ﻿namespace Tax.DataTransferring.TaxReturns
 {
-    public class TaxReturnWriteDto
+    public class TaxReturnInfoWriteDto
     {
         public decimal? GrossValue { get; set; }
         public decimal? NetValue { get; set; }

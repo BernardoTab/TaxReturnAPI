@@ -1,4 +1,7 @@
-﻿namespace TaxReturnAPI
+﻿using Tax.DataTransferring.Entities.Mapping.TaxReturns;
+using Tax.Services.Implementations.IoC;
+
+namespace TaxReturnAPI
 {
     public static class ServiceCollectionExtensions
     {
@@ -6,6 +9,8 @@
         {
             serviceCollection.AddControllers();
             serviceCollection.AddSwaggerGen();
+            serviceCollection.AddAutoMapper(typeof(VATRateDtoMap).Assembly);
+            serviceCollection.RegisterCommandHandlers();
         }
     }
 }
