@@ -12,10 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\Tax.DataTransferring.csproj" />
+    <ProjectReference Include="..\..\BusinessLogic\Tax.Services.Implementations.IoC\Tax.Services.Implementations.IoC.csproj" />
+    <ProjectReference Include="..\..\BusinessLogic\Tax.Services.Implementations\Tax.Services.Implementations.csproj" />
     <ProjectReference Include="..\Tax.DataTransferring.Entities.Mapping\Tax.DataTransferring.Entities.Mapping.csproj" />
-    <ProjectReference Include="..\Tax.Services.Implementations.IoC\Tax.Services.Implementations.IoC.csproj" />
-    <ProjectReference Include="..\Tax.Services.Implementations\Tax.Services.Implementations.csproj" />
+    <ProjectReference Include="..\Tax.DataTransferring\Tax.DataTransferring.csproj" />
   </ItemGroup>
 
 </Project>

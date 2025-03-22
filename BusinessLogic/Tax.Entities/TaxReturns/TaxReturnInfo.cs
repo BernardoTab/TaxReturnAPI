@@ -1,6 +1,4 @@
-﻿using Tax.Services.TaxReturns.Commands;
-
-namespace Tax.Entities.TaxReturns
+﻿namespace Tax.Entities.TaxReturns
 {
     public class TaxReturnInfo
     {

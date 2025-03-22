@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Tax.DataTransferring.TaxReturns;
-using Tax.Services.TaxReturns.Commands;
+using Tax.Entities.TaxReturns;
 
 namespace Tax.DataTransferring.Entities.Mapping.TaxReturns
 {

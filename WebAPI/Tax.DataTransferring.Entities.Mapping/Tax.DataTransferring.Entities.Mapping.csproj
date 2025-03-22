@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\Tax.DataTransferring.csproj" />
-    <ProjectReference Include="..\Tax.Entities\Tax.Entities.csproj" />
+    <ProjectReference Include="..\..\BusinessLogic\Tax.Entities\Tax.Entities.csproj" />
+    <ProjectReference Include="..\Tax.DataTransferring\Tax.DataTransferring.csproj" />
   </ItemGroup>
 
 </Project>

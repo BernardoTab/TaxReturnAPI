@@ -1,4 +1,4 @@
-﻿namespace Tax.Services.TaxReturns.Commands
+﻿namespace Tax.Entities.TaxReturns
 {
     public enum VATRate
     {
