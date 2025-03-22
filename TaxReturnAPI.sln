@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxReturnAPI", "TaxReturnAPI\TaxReturnAPI.csproj", "{5EC6D81F-CD7B-471B-9070-A74A7A0A5E3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tax.DataTransferring", "ClassLibrary1\Tax.DataTransferring.csproj", "{58CCC045-450B-4C19-81A2-AF4BDE4BDF99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5EC6D81F-CD7B-471B-9070-A74A7A0A5E3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EC6D81F-CD7B-471B-9070-A74A7A0A5E3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EC6D81F-CD7B-471B-9070-A74A7A0A5E3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58CCC045-450B-4C19-81A2-AF4BDE4BDF99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58CCC045-450B-4C19-81A2-AF4BDE4BDF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58CCC045-450B-4C19-81A2-AF4BDE4BDF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58CCC045-450B-4C19-81A2-AF4BDE4BDF99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
