@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tax.Services.Implementations.Common;
+using Tax.Services.Implementations.Common.Validations;
 using Tax.Services.Implementations.TaxReturns.Commands;
 
 namespace Tax.Services.Implementations.IoC
@@ -13,6 +14,7 @@ namespace Tax.Services.Implementations.IoC
                 .AddClasses(classes => classes.AssignableToAny(typeof(ICommandHandler<,>)))
                 .AsImplementedInterfaces()
                 .WithLifetime(ServiceLifetime.Transient));
+            services.Decorate(typeof(ICommandHandler<,>), typeof(ValidatedCommandHandler<,>));
         }
     }
 }

@@ -11,6 +11,7 @@ namespace TaxReturnAPI
             serviceCollection.AddSwaggerGen();
             serviceCollection.AddAutoMapper(typeof(VATRateDtoMap).Assembly);
             serviceCollection.RegisterCommandHandlers();
+            serviceCollection.RegisterValidators();
         }
     }
 }
