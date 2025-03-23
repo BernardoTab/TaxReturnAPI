@@ -33,7 +33,12 @@ TaxReturnInfo isn't, in my opinion, really an entity as it has no ID and isn't p
 
 It is possible that the calculations may be incorrect as I'm still a bit confused with what is considered to be Gross and Net, however, the values seem to match the calculator that was provided. If there is any error in calculation please let me know as this is easily adjustable. I also assumed a midpoint rounding with 2 decimal units would be ok.
 
-
 ## Tests
 
 I've prepared both unit tests and acceptance tests for this project, if you'd like to run them you can move to their respective directory and execute the command `dotnet test`
+
+## How to run the API
+
+### Clone the repository and run directly locally
+
+### Run docker-compose

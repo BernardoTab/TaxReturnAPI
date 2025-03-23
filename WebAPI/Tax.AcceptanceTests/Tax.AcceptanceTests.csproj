@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -14,9 +14,9 @@
     <PackageReference Include="MSTest" Version="3.6.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WebAPI\Tax.DataTransferring\Tax.DataTransferring.csproj" />
-    <ProjectReference Include="..\WebAPI\TaxReturnAPI\TaxReturnAPI.csproj" />
+  <ItemGroup>    
+	<ProjectReference Include="..\Tax.DataTransferring\Tax.DataTransferring.csproj" />
+    <ProjectReference Include="..\TaxReturnAPI\TaxReturnAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
