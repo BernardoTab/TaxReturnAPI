@@ -2,12 +2,9 @@ version: '3.8'
 
 services:
   taxreturnapi:
-    build:
-      context: .
-      dockerfile: WebApi/TaxReturnAPI/Dockerfile
+    build: .
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "5164:5164" # HTTP
     environment:
-      - ASPNETCORE_URLS=http://+:5000
-      - DOTNET_RUNNING_IN_CONTAINER=true
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5164

@@ -50,8 +50,12 @@ You can clone this repository and install the correct .NET SDK version (.NET 8.0
 3. `dotnet build`
 4. `dotnet run`
 
-Then you can simply send requests to the port that is shown on the browser as it automatically opens
+Then you can simply send requests via HTTP (port 5164) or HTTPS (port 7032) at the appropriate port
 
-### Run docker-compose
+### Run docker-compose (only HTTP)
 
-As an alternative, I've added a Dockerfile and a docker-compose.yml for an easy setup
+As an alternative, I've added a Dockerfile and a docker-compose.yml for an easy setup.
+
+1. Install Docker Desktop (if on Windows)
+2. Run the command `docker-compose up -d` to get the container running in the background
+3. I've enabled only HTTP on docker and the port is 5164 so you can now send requests to localhost:5164 via HTTP
