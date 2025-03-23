@@ -8,7 +8,11 @@ namespace TaxReturnAPI
     {
         public static void RegisterServices(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddControllers();
+            serviceCollection.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
             serviceCollection.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;

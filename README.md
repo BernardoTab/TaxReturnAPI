@@ -31,7 +31,7 @@ I assumed that this assignment would evaluate scalability and reusability so I o
 
 TaxReturnInfo isn't, in my opinion, really an entity as it has no ID and isn't part of the domain model (since there isn't any) but, for organization's sake, I considered it to be one in this project.
 
-It is possible that the calculations may be incorrect as I'm still a bit confused with what is considered to be Gross and Net, however, the values seem to match the calculator that was provided. If there is any error in calculation please let me know as this is easily adjustable. I also assumed a midpoint rounding with 2 decimal units would be ok.
+It is possible that the calculations may be incorrect as I sometimes confuse Gross and Net, however, the values seem to match the calculator that was provided. If there is any error in calculation please let me know as this is easily adjustable. I also assumed a midpoint rounding with 2 decimal units would be ok.
 
 I added Swagger for testing purposes so feel free to use it too if you'd like
 
