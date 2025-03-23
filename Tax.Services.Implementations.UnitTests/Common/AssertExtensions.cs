@@ -38,12 +38,10 @@ namespace Tax.Services.Implementations.UnitTests.Common
 
         public static async Task ThrowsInvalidVATRateValueExceptionAsync(
             this Assert _,
-            Func<Task> testAction,
-            object value)
+            Func<Task> testAction)
         {
             InvalidVATRateValueException exception =
                 await Assert.ThrowsExceptionAsync<InvalidVATRateValueException>(testAction);
-            Assert.AreEqual(expected: value, actual: exception.Value);
         }
     }
 }

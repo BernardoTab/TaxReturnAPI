@@ -67,8 +67,7 @@ namespace Tax.Services.Implementations.TaxReturns.EntityValidators
         {
             if (_taxReturnInfo.AustrianVATRate == default)
             {
-                throw new InvalidVATRateValueException(
-                    _taxReturnInfo.AustrianVATRate);
+                throw new InvalidVATRateValueException();
             }
         }
     }

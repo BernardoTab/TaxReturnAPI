@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 using Tax.DataTransferring.TaxReturns;
+using Tax.Entities.Exceptions;
 
 namespace Tax.AcceptanceTests.Controllers
 {
@@ -39,7 +40,7 @@ namespace Tax.AcceptanceTests.Controllers
             TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
             {
                 GrossValue = 10.5m,
-                AustrianVATRate = vatRate
+                AustrianVATRate = vatRate.ToString()
             };
             (decimal expectedGrossValue, decimal expectedNetValue, decimal expectedVATValue) = GetExpectedAmountValuesBasedOnFixedGross(vatRate);
 
@@ -50,7 +51,9 @@ namespace Tax.AcceptanceTests.Controllers
             expectedTaxReturnInfo.Should().BeEquivalentTo(
                 result,
                 o => o.Excluding(tri => tri.NetValue)
-                    .Excluding(tri => tri.VATValue));
+                    .Excluding(tri => tri.VATValue)
+                    .Excluding(tri => tri.AustrianVATRate));
+            Assert.AreEqual(expectedTaxReturnInfo.AustrianVATRate, result.AustrianVATRate.ToString());
             Assert.AreEqual(expectedVATValue, result.VATValue);
             Assert.AreEqual(expectedNetValue, result.NetValue);
         }
@@ -94,7 +97,7 @@ namespace Tax.AcceptanceTests.Controllers
             TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
             {
                 NetValue = 10.5m,
-                AustrianVATRate = vatRate
+                AustrianVATRate = vatRate.ToString()
             };
             (decimal expectedGrossValue, decimal expectedNetValue, decimal expectedVATValue) = GetExpectedAmountValuesBasedOnFixedNet(vatRate);
 
@@ -103,7 +106,9 @@ namespace Tax.AcceptanceTests.Controllers
             expectedTaxReturnInfo.Should().BeEquivalentTo(
                 result,
                 o => o.Excluding(tri => tri.GrossValue)
-                    .Excluding(tri => tri.VATValue));
+                    .Excluding(tri => tri.VATValue)
+                    .Excluding(tri => tri.AustrianVATRate));
+            Assert.AreEqual(expectedTaxReturnInfo.AustrianVATRate, result.AustrianVATRate.ToString());
             Assert.AreEqual(expectedVATValue, result.VATValue);
             Assert.AreEqual(expectedGrossValue, result.GrossValue);
         }
@@ -132,7 +137,7 @@ namespace Tax.AcceptanceTests.Controllers
             TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
             {
                 VATValue = 10.5m,
-                AustrianVATRate = vatRate
+                AustrianVATRate = vatRate.ToString()
             };
             (decimal expectedGrossValue, decimal expectedNetValue, decimal expectedVATValue) = GetExpectedAmountValuesBasedOnFixedVatValue(vatRate);
 
@@ -141,7 +146,9 @@ namespace Tax.AcceptanceTests.Controllers
             expectedTaxReturnInfo.Should().BeEquivalentTo(
                 result,
                 o => o.Excluding(tri => tri.GrossValue)
-                    .Excluding(tri => tri.NetValue));
+                    .Excluding(tri => tri.NetValue)
+                    .Excluding(tri => tri.AustrianVATRate));
+            Assert.AreEqual(expectedTaxReturnInfo.AustrianVATRate, result.AustrianVATRate.ToString());
             Assert.AreEqual(expectedNetValue, result.NetValue);
             Assert.AreEqual(expectedGrossValue, result.GrossValue);
         }
@@ -165,12 +172,137 @@ namespace Tax.AcceptanceTests.Controllers
         {
             TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
             {
-                AustrianVATRate = VATRateDto.VAT13Percent
+                AustrianVATRate = VATRateDto.VAT13Percent.ToString()
             };
 
             HttpResponseMessage response = await PostAsync(expectedTaxReturnInfo);
 
+            ErrorResponse? jsonResponse = await RetrieveErrorResponseOrDefault(response);
+            jsonResponse.Should().NotBeNull();
+            jsonResponse!.ExceptionType.Should().Be(nameof(IncorrectNumberOfValidAmountValuesException));
+        }
+
+        private class ErrorResponse
+        {
+            public int StatusCode { get; set; }
+            public string Message { get; set; }
+            public string ExceptionType { get; set; }
+        }
+
+        private async Task<ErrorResponse?> RetrieveErrorResponseOrDefault(HttpResponseMessage response)
+        {
             Assert.AreEqual(response.StatusCode, HttpStatusCode.BadRequest);
+            string jsonString = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ErrorResponse>(jsonString);
+        }
+
+        [TestMethod]
+        public async Task ProcessTaxReturnInfoAsync_MoreThanOneAmountParameters_ExceptionIsThrown()
+        {
+            TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
+            {
+                GrossValue = 50.4m,
+                NetValue = 12.4m,
+                AustrianVATRate = VATRateDto.VAT13Percent.ToString()
+            };
+
+            HttpResponseMessage response = await PostAsync(expectedTaxReturnInfo);
+
+            ErrorResponse? jsonResponse = await RetrieveErrorResponseOrDefault(response);
+            jsonResponse.Should().NotBeNull();
+            jsonResponse!.ExceptionType.Should().Be(nameof(IncorrectNumberOfValidAmountValuesException));
+        }
+
+        [TestMethod]
+        public async Task ProcessTaxReturnInfoAsync_MissingAustrianVATRate_ExceptionIsThrown()
+        {
+            TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
+            {
+                GrossValue = 50.4m,
+            };
+
+            HttpResponseMessage response = await PostAsync(expectedTaxReturnInfo);
+
+            ErrorResponse? jsonResponse = await RetrieveErrorResponseOrDefault(response);
+            jsonResponse.Should().NotBeNull();
+            jsonResponse!.ExceptionType.Should().Be(nameof(InvalidVATRateValueException));
+        }
+
+        [TestMethod]
+        [DataRow(0)]
+        [DataRow(-5.7)]
+        public async Task ProcessTaxReturnInfoAsync_GrossValueIsSet_InvalidValueAmount_ExceptionIsThrown(double value)
+        {
+            TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
+            {
+                GrossValue = (decimal)value,
+                AustrianVATRate = VATRateDto.VAT13Percent.ToString(),
+            };
+
+            HttpResponseMessage response = await PostAsync(expectedTaxReturnInfo);
+
+            ErrorResponse? jsonResponse = await RetrieveErrorResponseOrDefault(response);
+            jsonResponse.Should().NotBeNull();
+            jsonResponse!.ExceptionType.Should().Be(nameof(ValueNotSupportedException));
+        }
+
+        [TestMethod]
+        [DataRow(0)]
+        [DataRow(-5.7)]
+        public async Task ProcessTaxReturnInfoAsync_NetValueIsSet_InvalidValueAmount_ExceptionIsThrown(double value)
+        {
+            TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
+            {
+                NetValue = (decimal)value,
+                AustrianVATRate = VATRateDto.VAT13Percent.ToString()
+            };
+
+            HttpResponseMessage response = await PostAsync(expectedTaxReturnInfo);
+
+            ErrorResponse? jsonResponse = await RetrieveErrorResponseOrDefault(response);
+            jsonResponse.Should().NotBeNull();
+            jsonResponse!.ExceptionType.Should().Be(nameof(ValueNotSupportedException));
+        }
+
+        [TestMethod]
+        [DataRow(0)]
+        [DataRow(-5.7)]
+        public async Task ProcessTaxReturnInfoAsync_VatValueIsSet_InvalidValueAmount_ExceptionIsThrown(double value)
+        {
+            TaxReturnInfoWriteDto expectedTaxReturnInfo = new TaxReturnInfoWriteDto
+            {
+                VATValue = (decimal)value,
+                AustrianVATRate = VATRateDto.VAT13Percent.ToString()
+            };
+
+            HttpResponseMessage response = await PostAsync(expectedTaxReturnInfo);
+
+            ErrorResponse? jsonResponse = await RetrieveErrorResponseOrDefault(response);
+            jsonResponse.Should().NotBeNull();
+            jsonResponse!.ExceptionType.Should().Be(nameof(ValueNotSupportedException));
+        }
+
+        [TestMethod]
+        public async Task ProcessTaxReturnInfoAsync_AustrianVatRateIsSet_InvalidFormat_ExceptionIsThrown()
+        {
+            string incorrectParameterTypePayload = @"
+            {
+                ""GrossValue"": 1000.50,
+                ""AustrianVATRate"": ""snoopy""
+            }";
+
+            HttpResponseMessage response = await PostAsyncWithString(incorrectParameterTypePayload);
+
+            ErrorResponse? jsonResponse = await RetrieveErrorResponseOrDefault(response);
+            jsonResponse.Should().NotBeNull();
+            jsonResponse!.ExceptionType.Should().Be(nameof(InvalidVATRateValueException));
+        }
+
+        private async Task<HttpResponseMessage> PostAsyncWithString(string jsonPayload)
+        {
+            string endpointUri = $"/api/Taxes/";
+            HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            return await _client.PostAsync(endpointUri, content);
         }
     }
 }

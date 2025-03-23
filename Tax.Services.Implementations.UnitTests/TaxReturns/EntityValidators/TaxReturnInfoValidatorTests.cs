@@ -134,9 +134,7 @@ namespace Tax.Services.Implementations.UnitTests.TaxReturns.EntityValidators
 
             Func<Task> testAction = async () => await ValueObjectValidator.ValidateAsync(ValueObject);
 
-            await Assert.That.ThrowsInvalidVATRateValueExceptionAsync(
-                testAction,
-                ValueObject.AustrianVATRate);
+            await Assert.That.ThrowsInvalidVATRateValueExceptionAsync(testAction);
         }
     }
 }

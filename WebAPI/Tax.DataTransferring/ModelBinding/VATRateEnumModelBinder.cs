@@ -12,21 +12,16 @@ namespace Tax.DataTransferring.ModelBinding
             {
                 throw new ArgumentNullException(nameof(bindingContext));
             }
-
             string value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName).FirstValue;
-
             if (string.IsNullOrWhiteSpace(value))
             {
                 bindingContext.Result = ModelBindingResult.Success(VATRate.Unknown);
                 return Task.CompletedTask;
             }
-
-            // Try to parse the input value as an enum
             if (!Enum.TryParse(typeof(VATRate), value, true, out object? parsedEnum) || !Enum.IsDefined(typeof(VATRate), parsedEnum))
             {
-                throw new InvalidVATRateValueException(value);
+                throw new InvalidVATRateValueException();
             }
-
             bindingContext.Result = ModelBindingResult.Success((VATRate)parsedEnum);
             return Task.CompletedTask;
         }

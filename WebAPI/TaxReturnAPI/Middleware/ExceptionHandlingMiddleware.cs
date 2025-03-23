@@ -40,7 +40,8 @@ namespace TaxReturnAPI.Middleware
             var response = new
             {
                 StatusCode = statusCode,
-                Message = exception.Message
+                Message = exception.Message,
+                ExceptionType = exception.GetType().Name
             };
             string jsonResponse = JsonSerializer.Serialize(response);
             context.Response.ContentType = "application/json";

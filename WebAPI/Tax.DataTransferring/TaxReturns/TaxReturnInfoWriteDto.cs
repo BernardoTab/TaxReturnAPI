@@ -12,6 +12,6 @@ namespace Tax.DataTransferring.TaxReturns
         [ModelBinder(BinderType = typeof(DecimalModelBinder))]
         public decimal? VATValue { get; set; }
         [ModelBinder(BinderType = typeof(VATRateEnumModelBinder))]
-        public VATRateDto AustrianVATRate { get; set; }
+        public string AustrianVATRate { get; set; } = "";
     }
 }

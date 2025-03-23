@@ -4,6 +4,7 @@ using Tax.DataTransferring.TaxReturns;
 using Tax.Entities.TaxReturns;
 using Tax.Services.Implementations.Common;
 using Tax.Services.TaxReturns.Commands;
+using TaxReturnAPI.ModelState;
 
 namespace TaxReturnAPI.Controllers
 {
@@ -23,6 +24,10 @@ namespace TaxReturnAPI.Controllers
             [FromBody] TaxReturnInfoWriteDto taxReturnInfoWriteDto,
             [FromServices] ICommandHandler<ProcessTaxReturnInfoCommand, ProcessedTaxReturnInfo> processTaxInfoCommandHandler)
         {
+            if (!ModelState.IsValid)
+            {
+                ModelState.ThrowInvalidModelStateExceptions();
+            }
             TaxReturnInfo taxReturnInfo = _dtoMapper.Map<TaxReturnInfo>(taxReturnInfoWriteDto);
             ProcessTaxReturnInfoCommand command = new ProcessTaxReturnInfoCommand
             {

@@ -17,8 +17,7 @@ namespace Tax.DataTransferring.ModelBinding
             }
             if (!decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal decimalValue))
             {
-                bindingContext.ModelState.AddModelError(bindingContext.ModelName, "Invalid decimal format.");
-                throw new InvalidInputTypeException(value, propertyName);
+                throw new InvalidInputTypeException(propertyName);
             }
             bindingContext.Result = ModelBindingResult.Success(decimalValue);
             return Task.CompletedTask;
