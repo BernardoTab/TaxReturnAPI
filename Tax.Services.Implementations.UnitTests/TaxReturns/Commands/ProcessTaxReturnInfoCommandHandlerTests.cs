@@ -11,7 +11,7 @@ namespace Tax.Services.Implementations.UnitTests.TaxReturns.Commands
         CommandHandlerTests<
             ProcessTaxReturnInfoCommandHandler,
             ProcessTaxReturnInfoCommand,
-            TaxReturnInfo>
+            ProcessedTaxReturnInfo>
     {
         protected override ProcessTaxReturnInfoCommand CreateValidCommand()
         {
@@ -35,21 +35,21 @@ namespace Tax.Services.Implementations.UnitTests.TaxReturns.Commands
         }
 
         [TestMethod]
+        [DataRow(VATRate.VAT10Percent)]
         [DataRow(VATRate.VAT13Percent)]
-        [DataRow(VATRate.VAT15Percent)]
         [DataRow(VATRate.VAT20Percent)]
         public async Task HandleAsync_GrossValueIsSet_TaxReturnInfoIsProcessedCorrectly(VATRate vatRate)
         {
             Command.TaxReturnInfo.AustrianVATRate = vatRate;
             decimal expectedVatRate = GetVATRate();
-            decimal? expectedVatValue = Command.TaxReturnInfo.GrossValue * expectedVatRate;
+            decimal? expectedVatValue = Command.TaxReturnInfo.GrossValue / (1 + 1 / expectedVatRate);
             decimal? expectedNetValue = Command.TaxReturnInfo.GrossValue - expectedVatValue;
 
-            TaxReturnInfo result = await CommandHandler.HandleAsync(Command);
+            ProcessedTaxReturnInfo result = await CommandHandler.HandleAsync(Command);
 
             Assert.AreEqual(Command.TaxReturnInfo.GrossValue, result.GrossValue);
-            Assert.AreEqual(expectedNetValue, result.NetValue);
-            Assert.AreEqual(expectedVatValue, result.VATValue);
+            Assert.AreEqual(Math.Round(expectedNetValue!.Value, 2, MidpointRounding.ToEven), result.NetValue);
+            Assert.AreEqual(Math.Round(expectedVatValue!.Value, 2, MidpointRounding.ToEven), result.VATValue);
             Assert.AreEqual(Command.TaxReturnInfo.AustrianVATRate, result.AustrianVATRate);
         }
 
@@ -59,8 +59,8 @@ namespace Tax.Services.Implementations.UnitTests.TaxReturns.Commands
         }
 
         [TestMethod]
+        [DataRow(VATRate.VAT10Percent)]
         [DataRow(VATRate.VAT13Percent)]
-        [DataRow(VATRate.VAT15Percent)]
         [DataRow(VATRate.VAT20Percent)]
         public async Task HandleAsync_NetValueIsSet_TaxReturnInfoIsProcessedCorrectly(VATRate vatRate)
         {
@@ -68,20 +68,20 @@ namespace Tax.Services.Implementations.UnitTests.TaxReturns.Commands
             Command.TaxReturnInfo.GrossValue = default;
             Command.TaxReturnInfo.NetValue = 50;
             decimal expectedVatRate = GetVATRate();
-            decimal? expectedVatValue = Command.TaxReturnInfo.NetValue / expectedVatRate;
+            decimal? expectedVatValue = Command.TaxReturnInfo.NetValue * expectedVatRate;
             decimal? expectedGrossValue = Command.TaxReturnInfo.NetValue + expectedVatValue;
 
-            TaxReturnInfo result = await CommandHandler.HandleAsync(Command);
+            ProcessedTaxReturnInfo result = await CommandHandler.HandleAsync(Command);
 
             Assert.AreEqual(Command.TaxReturnInfo.NetValue, result.NetValue);
-            Assert.AreEqual(expectedGrossValue, result.GrossValue);
-            Assert.AreEqual(expectedVatValue, result.VATValue);
+            Assert.AreEqual(Math.Round(expectedGrossValue!.Value, 2, MidpointRounding.ToEven), result.GrossValue);
+            Assert.AreEqual(Math.Round(expectedVatValue!.Value, 2, MidpointRounding.ToEven), result.VATValue);
             Assert.AreEqual(Command.TaxReturnInfo.AustrianVATRate, result.AustrianVATRate);
         }
 
         [TestMethod]
+        [DataRow(VATRate.VAT10Percent)]
         [DataRow(VATRate.VAT13Percent)]
-        [DataRow(VATRate.VAT15Percent)]
         [DataRow(VATRate.VAT20Percent)]
         public async Task HandleAsync_VATValueIsSet_TaxReturnInfoIsProcessedCorrectly(VATRate vatRate)
         {
@@ -89,14 +89,14 @@ namespace Tax.Services.Implementations.UnitTests.TaxReturns.Commands
             Command.TaxReturnInfo.GrossValue = default;
             Command.TaxReturnInfo.VATValue = 50;
             decimal expectedVatRate = GetVATRate();
-            decimal? expectedGrossValue = Command.TaxReturnInfo.VATValue / expectedVatRate;
-            decimal? expectedNetValue = expectedGrossValue - Command.TaxReturnInfo.VATValue;
+            decimal? expectedNetValue = Command.TaxReturnInfo.VATValue / expectedVatRate;
+            decimal? expectedGrossValue = expectedNetValue + Command.TaxReturnInfo.VATValue;
 
-            TaxReturnInfo result = await CommandHandler.HandleAsync(Command);
+            ProcessedTaxReturnInfo result = await CommandHandler.HandleAsync(Command);
 
             Assert.AreEqual(Command.TaxReturnInfo.VATValue, result.VATValue);
-            Assert.AreEqual(expectedGrossValue, result.GrossValue);
-            Assert.AreEqual(expectedNetValue, result.NetValue);
+            Assert.AreEqual(Math.Round(expectedGrossValue!.Value, 2, MidpointRounding.ToEven), result.GrossValue);
+            Assert.AreEqual(Math.Round(expectedNetValue!.Value, 2, MidpointRounding.ToEven), result.NetValue);
             Assert.AreEqual(Command.TaxReturnInfo.AustrianVATRate, result.AustrianVATRate);
         }
     }

@@ -5,25 +5,25 @@ using Tax.Services.TaxReturns.Commands;
 
 namespace Tax.Services.Implementations.TaxReturns.Commands
 {
-    public class ProcessTaxReturnInfoCommandHandler : ICommandHandler<ProcessTaxReturnInfoCommand, TaxReturnInfo>
+    public class ProcessTaxReturnInfoCommandHandler : ICommandHandler<ProcessTaxReturnInfoCommand, ProcessedTaxReturnInfo>
     {
         private ProcessTaxReturnInfoCommand _command;
 
-        public async Task<TaxReturnInfo> HandleAsync(ProcessTaxReturnInfoCommand command)
+        public async Task<ProcessedTaxReturnInfo> HandleAsync(ProcessTaxReturnInfoCommand command)
         {
             _command = command;
-            TaxReturnInfo processedTaxReturnInfo = ComputeTaxAmounts(_command.TaxReturnInfo);
+            ProcessedTaxReturnInfo processedTaxReturnInfo = ComputeTaxAmounts(_command.TaxReturnInfo);
             return await Task.FromResult(processedTaxReturnInfo);
         }
 
-        private TaxReturnInfo ComputeTaxAmounts(TaxReturnInfo taxReturnInfo)
+        private ProcessedTaxReturnInfo ComputeTaxAmounts(TaxReturnInfo taxReturnInfo)
         {
             string validAmountPropertyName = taxReturnInfo.GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.PropertyType == typeof(decimal?) && p.GetValue(taxReturnInfo) != null)
                 .Select(p => p.Name)
                 .First();
-            TaxReturnInfo result = new TaxReturnInfo();
+            ProcessedTaxReturnInfo result = new ProcessedTaxReturnInfo();
             switch (validAmountPropertyName)
             {
                 case nameof(TaxReturnInfo.NetValue):
@@ -39,15 +39,15 @@ namespace Tax.Services.Implementations.TaxReturns.Commands
             return result;
         }
 
-        private TaxReturnInfo ProcessTaxInfoBasedOnNetValue()
+        private ProcessedTaxReturnInfo ProcessTaxInfoBasedOnNetValue()
         {
             decimal? netValue = _command.TaxReturnInfo.NetValue;
             decimal vatRate = GetVATRate();
-            decimal? vatValue = netValue / vatRate;
+            decimal? vatValue = netValue * vatRate;
             return CreateTaxReturnInfo(
-                grossValue: netValue + vatValue,
-                netValue,
-                vatValue);
+                grossValue: netValue!.Value + vatValue!.Value,
+                netValue!.Value,
+                vatValue!.Value);
         }
 
         private decimal GetVATRate()
@@ -55,40 +55,40 @@ namespace Tax.Services.Implementations.TaxReturns.Commands
             return ((int)_command.TaxReturnInfo.AustrianVATRate) * 0.01m;
         }
 
-        private TaxReturnInfo CreateTaxReturnInfo(
-            decimal? grossValue,
-            decimal? netValue,
-            decimal? vatValue)
+        private ProcessedTaxReturnInfo CreateTaxReturnInfo(
+            decimal grossValue,
+            decimal netValue,
+            decimal vatValue)
         {
-            return new TaxReturnInfo
+            return new ProcessedTaxReturnInfo
             {
-                GrossValue = grossValue,
-                NetValue = netValue,
-                VATValue = vatValue,
+                GrossValue = Math.Round(grossValue, 2, MidpointRounding.ToEven),
+                NetValue = Math.Round(netValue, 2, MidpointRounding.ToEven),
+                VATValue = Math.Round(vatValue, 2, MidpointRounding.ToEven),
                 AustrianVATRate = _command.TaxReturnInfo.AustrianVATRate
             };
         }
 
-        private TaxReturnInfo ProcessTaxInfoBasedOnGrossValue()
+        private ProcessedTaxReturnInfo ProcessTaxInfoBasedOnGrossValue()
         {
             decimal? grossValue = _command.TaxReturnInfo.GrossValue;
             decimal vatRate = GetVATRate();
-            decimal? vatValue = grossValue * vatRate;
+            decimal? vatValue = grossValue / (1 + 1 / vatRate);
             return CreateTaxReturnInfo(
-                grossValue,
-                netValue: grossValue - vatValue,
-                vatValue);
+                grossValue!.Value,
+                netValue: grossValue!.Value - vatValue!.Value,
+                vatValue!.Value);
         }
 
-        private TaxReturnInfo ProcessTaxInfoBasedOnVATValue()
+        private ProcessedTaxReturnInfo ProcessTaxInfoBasedOnVATValue()
         {
             decimal? vatValue = _command.TaxReturnInfo.VATValue;
             decimal vatRate = GetVATRate();
-            decimal? grossValue = vatValue / vatRate;
+            decimal? netValue = vatValue / vatRate;
             return CreateTaxReturnInfo(
-                grossValue,
-                netValue: grossValue - vatValue,
-                vatValue);
+                grossValue: netValue!.Value + vatValue!.Value,
+                netValue!.Value,
+                vatValue!.Value);
         }
     }
 }

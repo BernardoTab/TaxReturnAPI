@@ -6,7 +6,7 @@ using Tax.Services.TaxReturns.Commands;
 namespace Tax.Services.Implementations.TaxReturns.Commands.Validators
 {
     public class ProcessTaxReturnInfoCommandValidator :
-        ICommandValidator<ProcessTaxReturnInfoCommand, TaxReturnInfo>
+        ICommandValidator<ProcessTaxReturnInfoCommand, ProcessedTaxReturnInfo>
     {
         private readonly IValueObjectValidator<TaxReturnInfo> _taxReturnInfoValidator;
         private ProcessTaxReturnInfoCommand _command;

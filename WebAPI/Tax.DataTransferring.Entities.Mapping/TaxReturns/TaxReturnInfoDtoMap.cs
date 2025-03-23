@@ -9,7 +9,7 @@ namespace Tax.DataTransferring.Entities.Mapping.TaxReturns
         public TaxReturnInfoDtoMap()
         {
             CreateMap<TaxReturnInfoWriteDto, TaxReturnInfo>();
-            CreateMap<TaxReturnInfo, TaxReturnInfoReadDto>();
+            CreateMap<ProcessedTaxReturnInfo, TaxReturnInfoReadDto>();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Tax.Services.Implementations.UnitTests.TaxReturns.Commands.Validators
         CommandValidatorTests<
             ProcessTaxReturnInfoCommandValidator,
             ProcessTaxReturnInfoCommand,
-            TaxReturnInfo>
+            ProcessedTaxReturnInfo>
     {
         private IValueObjectValidator<TaxReturnInfo> _taxReturnInfoValidatorMock;
 

@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C2C289C2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tax.Services.Implementations.UnitTests", "Tax.Services.Implementations.UnitTests\Tax.Services.Implementations.UnitTests.csproj", "{09B07C74-228E-4BBC-84A9-061FB23953E2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E76B39E8-BA98-4BDC-95BE-859C5F233260}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tax.AcceptanceTests", "Tax.AcceptanceTests\Tax.AcceptanceTests.csproj", "{3CF1AACE-7A16-4069-9FEC-FA180D0F882A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,10 @@ Global
 		{09B07C74-228E-4BBC-84A9-061FB23953E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09B07C74-228E-4BBC-84A9-061FB23953E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09B07C74-228E-4BBC-84A9-061FB23953E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CF1AACE-7A16-4069-9FEC-FA180D0F882A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CF1AACE-7A16-4069-9FEC-FA180D0F882A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CF1AACE-7A16-4069-9FEC-FA180D0F882A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CF1AACE-7A16-4069-9FEC-FA180D0F882A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,5 +85,7 @@ Global
 		{07692DF0-8EB7-4A35-B4B8-792494D22925} = {D9D59447-935D-486B-88E3-E60B844B4D61}
 		{C2C289C2-751F-4112-A9F8-83308F2C1EBC} = {8B62F3F2-32D0-4C2F-8431-FC5BACF2CA44}
 		{09B07C74-228E-4BBC-84A9-061FB23953E2} = {C2C289C2-751F-4112-A9F8-83308F2C1EBC}
+		{E76B39E8-BA98-4BDC-95BE-859C5F233260} = {D9D59447-935D-486B-88E3-E60B844B4D61}
+		{3CF1AACE-7A16-4069-9FEC-FA180D0F882A} = {E76B39E8-BA98-4BDC-95BE-859C5F233260}
 	EndGlobalSection
 EndGlobal

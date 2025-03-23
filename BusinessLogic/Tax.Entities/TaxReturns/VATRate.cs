@@ -3,8 +3,8 @@
     public enum VATRate
     {
         Unknown,
+        VAT10Percent = 10,
         VAT13Percent = 13,
-        VAT15Percent = 15,
         VAT20Percent = 20
     }
 }
