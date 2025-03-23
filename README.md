@@ -33,12 +33,25 @@ TaxReturnInfo isn't, in my opinion, really an entity as it has no ID and isn't p
 
 It is possible that the calculations may be incorrect as I'm still a bit confused with what is considered to be Gross and Net, however, the values seem to match the calculator that was provided. If there is any error in calculation please let me know as this is easily adjustable. I also assumed a midpoint rounding with 2 decimal units would be ok.
 
+I added Swagger for testing purposes so feel free to use it too if you'd like
+
 ## Tests
 
-I've prepared both unit tests and acceptance tests for this project, if you'd like to run them you can move to their respective directory and execute the command `dotnet test`
+I've prepared both unit tests (Tax.Services.Implementations.UnitTests) and acceptance tests (Tax.AcceptanceTests) for this project, if you'd like to run them you can move to their respective directory and execute the command `dotnet test` or use an IDE
 
 ## How to run the API
 
 ### Clone the repository and run directly locally
 
+You can clone this repository and install the correct .NET SDK version (.NET 8.0), then follow the steps:
+
+1. Open the .sln file in Visual Studio or open everything in Visual Studio Code
+2. Run `dotnet restore` to ensure the NuGet dependencies are set
+3. `dotnet build`
+4. `dotnet run`
+
+Then you can simply send requests to the port that is shown on the browser as it automatically opens
+
 ### Run docker-compose
+
+As an alternative, I've added a Dockerfile and a docker-compose.yml for an easy setup
