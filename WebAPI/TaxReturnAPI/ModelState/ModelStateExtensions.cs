@@ -9,7 +9,7 @@ namespace TaxReturnAPI.ModelState
         public static void ThrowInvalidModelStateExceptions(this ModelStateDictionary modelState)
         {
             string invalidDecimalPropertyName = GetInvalidDecimalPropertyName(modelState);
-            if (modelState.Any(mse => mse.Key.Contains(nameof(TaxReturnInfo.AustrianVATRate))))
+            if (modelState.Any(mse => mse.Key.ToLower().Contains(nameof(TaxReturnInfo.AustrianVATRate).ToLower())))
             {
                 throw new InvalidVATRateValueException();
             }
@@ -22,15 +22,15 @@ namespace TaxReturnAPI.ModelState
         private static string GetInvalidDecimalPropertyName(ModelStateDictionary modelState)
         {
             string propName = "";
-            if (modelState.Any(mse => mse.Key.Contains(nameof(TaxReturnInfo.NetValue))))
+            if (modelState.Any(mse => mse.Key.ToLower().Contains(nameof(TaxReturnInfo.NetValue).ToLower())))
             {
                 propName = nameof(TaxReturnInfo.NetValue);
             }
-            else if (modelState.Any(mse => mse.Key.Contains(nameof(TaxReturnInfo.GrossValue))))
+            else if (modelState.Any(mse => mse.Key.ToLower().Contains(nameof(TaxReturnInfo.GrossValue).ToLower())))
             {
                 propName = nameof(TaxReturnInfo.GrossValue);
             }
-            else if (modelState.Any(mse => mse.Key.Contains(nameof(TaxReturnInfo.VATValue))))
+            else if (modelState.Any(mse => mse.Key.ToLower().Contains(nameof(TaxReturnInfo.VATValue).ToLower())))
             {
                 propName = nameof(TaxReturnInfo.VATValue);
             }

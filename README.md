@@ -31,6 +31,8 @@ I assumed that this assignment would evaluate scalability and reusability so I o
 
 TaxReturnInfo isn't, in my opinion, really an entity as it has no ID and isn't part of the domain model (since there isn't any) but, for organization's sake, I considered it to be one in this project.
 
+The assignment doesn't request this but I limited the input validations so that they would not accept negative numbers as to me it wouldn't make much sense to calculate negative values, if this is wrong I apologize. I also restricted the options for the VAT Rate so only the austrian values can be picked. 
+
 It is possible that the calculations may be incorrect as I sometimes confuse Gross and Net, however, the values seem to match the calculator that was provided. If there is any error in calculation please let me know as this is easily adjustable. I also assumed a midpoint rounding with 2 decimal units would be ok.
 
 I added Swagger for testing purposes so feel free to use it too if you'd like
